@@ -1,3 +1,3 @@
-# Mathalg (%)-( | )
-Java library for math and algorithms
+# Mathalg
+Java library for math and algorithms (%)-( | )
 
