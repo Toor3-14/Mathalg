@@ -4,15 +4,22 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
 public final strictfp class Matrix {
 	
 	static private long numberOfVariables = 0;
-	private long thisVariable;
+	private long thisVariableIterNumber;
+	private String thisVariableName;
 	private long _lines = 0;
 	private long _rows = 0;
 	
 	private void initVariable(String data) {
-		try(FileWriter out = new FileWriter("var" + thisVariable + ".matrix")) {
+		try(FileWriter out = new FileWriter(thisVariableName)) {
 			
 			String lastStr = "%";
 			
@@ -33,7 +40,7 @@ public final strictfp class Matrix {
 		
 		String data = "";
 		
-		try(FileReader in = new FileReader("var" + thisVariable + ".matrix")) {
+		try(FileReader in = new FileReader(thisVariableName)) {
 			
 			long currentPositionX = 0;
 			long currentPositionY = 1;
@@ -70,11 +77,13 @@ public final strictfp class Matrix {
 		}
 		return data;
 	}
+
 	
 	public Matrix(int... MatrixVar) {
 		_lines += 1;
 		numberOfVariables += 1;
-		thisVariable = numberOfVariables;
+		thisVariableIterNumber = numberOfVariables;
+		thisVariableName = "var" + thisVariableIterNumber + ".matrix";
 		
 		String data = "";
 		for(int val : MatrixVar) {
@@ -87,17 +96,30 @@ public final strictfp class Matrix {
 	
 	public int getElement(long line, long row) {
 		if(line > _lines) {
-			System.out.println("Incorrect matrix position in arguments for method - getElement(),");
-			System.out.println("You have [" + _lines + "] - lines, but you select [" + line + "] line.");
+			System.out.println("[Mathalg - matrix]\t%|^w^|%\n" 
+					+ "Incorrect matrix position in arguments for method - getElement(),\n"
+					+ "You have [" + _lines + "] - lines, but you select [" + line + "] line.");
 			return 0;
 		}
 		if(row > _rows) {
-			System.out.println("Incorrect matrix position in arguments for method - getElement(),");
-			System.out.println("You have [" + _rows + "] - rows, but you select [" + row + "] row.");
+			System.out.println("[Mathalg - matrix]\t%|^w^|%\n" 
+					+ "Incorrect matrix position in arguments for method - getElement(),\n" 
+					+ "You have [" + _rows + "] - rows, but you select [" + row + "] row.");
 			return 0;
 		}
 		return Integer.parseInt(getElements(line, row));
 		
 	}
+	public<T extends Number> void append(T data) {
+		Path path = Paths.get(thisVariableName);
+        String text = String.valueOf(data) + "|";
+ 
+        try {
+            Files.write(path, text.getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	
 }
