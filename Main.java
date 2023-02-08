@@ -1,14 +1,14 @@
-import java.io.IOException;
 
-import math.Matrix;
+import Mathalg.Matrix;
+
 
 public class Main {
 	
 	public static void main(String[] args) {
-		Matrix x = new Matrix(1,253,342,47,54,6);
-		Matrix y = new Matrix(1,2,3,4);
-		
-		x.append(123);
+		Integer[][] x = new Integer[][] {{1,2,3},{4,5,6,7}}; 
+		Matrix<Integer> y = new Matrix<>(x);
+		y.append(1,2,3);
+		System.out.println(y.getElement(2, 7));
 	}
 	
 }
