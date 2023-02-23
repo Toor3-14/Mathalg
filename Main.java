@@ -1,12 +1,9 @@
 import Mathalg.Matrix;
-import java.util.List;
-import java.util.ArrayList;
+
 public class Main {
 	
 	public static void main(String[] args) {
-		List<String[]> l = new ArrayList<>();
-		l.add(new String[]{"1", "2", "3" , "4"});
-		l.add(new String[] {"5", "6"});
+
 		
 		Integer[][] a = new Integer[][] {
 			{3, -1, 2}, 
@@ -18,15 +15,23 @@ public class Main {
 			{7},
 			{-1}
 		};
-		Byte[][] c = new Byte[][] {
+		Integer[][] c = new Integer[][] {
 			{8,2,4}, 
 			{7,5,6},
-			{2,2}
+			{2,2,4}
 		};
-		Matrix<Integer> x = new Matrix<>(a);
-		Matrix<Integer> y = new Matrix<>(b);
-		x.mult(y);
-		System.out.println(x);
+		Integer[][] d = new Integer[][] {
+			{8,2,4}, 
+			{7,5,6},
+			{2,2,5}
+		};
+		Number[][] res = Matrix.plus(c, d);
+		for(int i = 0; i<res.length;i++) {
+			for(int j = 0;j<res[i].length;j++) {
+				System.out.print(res[i][j] + ", ");
+			}
+			System.out.println();
+		}
 
 	}
 }

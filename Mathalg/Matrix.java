@@ -1,165 +1,219 @@
+/*
+ * Copyright (c) 2023, chi76. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 3 only, as
+ * published by the Free Software Foundation. 
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 3 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 3 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact me:
+ * 		Email - toorkeor@gmail.com
+ * 		Telegram - t.me/@redltoor
+ */
 package Mathalg;
-public class Matrix<T extends Number> {
-	/*
-	 * init
-	 * */
-	private Object[][] matrix = {};
-	private int sizeY;
-	private int sizeX;
+
+/**
+ * This class contains various methods for manipulating arrays[][] as matrix
+ *
+ * <p>Almost all methods in this class have an unchecked type  {@code @SuppressWarnings("unchecked")}
+ *
+ * <p>The documentation for the methods contained in this class includes
+ * brief descriptions of the <i>implementations</i>. Such descriptions should
+ * be regarded as <i>implementation notes</i>, rather than parts of the
+ * <i>specification</i>.
+ *
+ * <p>This class is a member of the
+ * <a href="https://github.com/Toor3-14/Mathalg/tree/main/Mathalg">
+ * Mathalg Framework</a>.
+ *
+ * @author chi76
+ * @version  0.1
+ */
+public class Matrix {
 	
-	/*
-	 * Byte - 1
-	 * Short - 2
-	 * Integer - 3
-	 * Long - 4
-	 * Float - 5
-	 * Double - 6
-	 * 
-	 * */
-	private byte type;
-	
-	private void setType() {
-		T var = (T) matrix[0][0];
+	private static <R extends Number> byte checkType(R var) {
 		String strType = String.valueOf( var.getClass() );
-		if( strType.contains("Byte") ) type = 1;
-		else if( strType.contains("Short") ) type = 2;
-		else if( strType.contains("Integer") ) type = 3;
-		else if( strType.contains("Long") ) type = 4;
-		else if( strType.contains("Float") ) type = 5;
-		else if( strType.contains("Double") ) type = 6;
+		if( strType.contains("Integer") )  return 1;
+		else if( strType.contains("Long") ) return 2;
+		else if( strType.contains("Float") ) return 3;
+		else if( strType.contains("Double") ) return 4;
+		else throw new IllegalArgumentException("Undefind type"); 
 	}
 	
-	/*
-	 * constructor
-	 * */
-	private Matrix(Object[][] matrix) {
-		this.matrix = matrix;
-	}
-	public Matrix(T[][] item) {
-		
+	private static<R extends Number> int getMax(R[][] matrix) {
 		int max = 0;
-		
-		for(int i = 0; i < item.length; i++) {
-			if(item[i].length > max) max = item[i].length;
-		}
-		
-		Object[][] newMatrix = new Object[item.length][max];
-		
-		for(int i = 0; i < item.length; i++) {
-			for(int j = 0; j < item[i].length; j++) {
-				newMatrix[i][j] = item[i][j];
-			}
-			for(int j = item[i].length; j < newMatrix[i].length; j++) {
-				if(newMatrix[i][j] == null) newMatrix[i][j] = 0;
+		int iter = 0;
+		for(int i = 0; i < matrix.length; i++) {
+			if(matrix[i].length > max) {
+				max = matrix[i].length;
+				iter++;
+			}else if(matrix[i].length < max) {
+				iter++;
 			}
 		}
-		matrix = newMatrix;
-		sizeY = newMatrix.length;
-		sizeX = max;
-		setType();
-		
+		if(iter>1) throw new IllegalArgumentException("Incorrect line size of array, the lines must be the same size inside the array!"); 
+		return max;
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R plus(R x,R y) {
+		byte type = checkType(x);
+		if(type == 1) {
+			Integer res =  Integer.parseInt( String.valueOf( x ) ) + Integer.parseInt( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 2) {
+			Long res = Long.parseLong( String.valueOf( x ) ) + Long.parseLong( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 3) {
+			Float res = Float.parseFloat( String.valueOf( x ) ) + Float.parseFloat( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 4) {
+			Double res = Double.parseDouble( String.valueOf( x ) ) +Double.parseDouble( String.valueOf( y ) );
+			return (R) res;
+		}else throw new IllegalArgumentException("Undefind type"); 
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R minus(R x,R y) {
+		byte type = checkType(x);
+		if(type == 1) {
+			Integer res =  Integer.parseInt( String.valueOf( x ) ) - Integer.parseInt( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 2) {
+			Long res = Long.parseLong( String.valueOf( x ) ) - Long.parseLong( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 3) {
+			Float res = Float.parseFloat( String.valueOf( x ) ) - Float.parseFloat( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 4) {
+			Double res = Double.parseDouble( String.valueOf( x ) ) - Double.parseDouble( String.valueOf( y ) );
+			return (R) res;
+		}else throw new IllegalArgumentException("Undefind type"); 
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R mult(R x,R y) {
+		byte type = checkType(x);
+		if(type == 1) {
+			Integer res =  Integer.parseInt( String.valueOf( x ) ) * Integer.parseInt( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 2) {
+			Long res = Long.parseLong( String.valueOf( x ) ) * Long.parseLong( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 3) {
+			Float res = Float.parseFloat( String.valueOf( x ) ) * Float.parseFloat( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 4) {
+			Double res = Double.parseDouble( String.valueOf( x ) ) * Double.parseDouble( String.valueOf( y ) );
+			return (R) res;
+		}else throw new IllegalArgumentException("Undefind type"); 
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R divid(R x,R y) {
+		byte type = checkType(x);
+		if(type == 1) {
+			Integer res =  Integer.parseInt( String.valueOf( x ) ) / Integer.parseInt( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 2) {
+			Long res = Long.parseLong( String.valueOf( x ) ) / Long.parseLong( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 3) {
+			Float res = Float.parseFloat( String.valueOf( x ) ) / Float.parseFloat( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 4) {
+			Double res = Double.parseDouble( String.valueOf( x ) ) / Double.parseDouble( String.valueOf( y ) );
+			return (R) res;
+		}else throw new IllegalArgumentException("Undefind type"); 
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R mod(R x,R y) {
+		byte type = checkType(x);
+		if(type == 1) {
+			Integer res =  Integer.parseInt( String.valueOf( x ) ) % Integer.parseInt( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 2) {
+			Long res = Long.parseLong( String.valueOf( x ) ) % Long.parseLong( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 3) {
+			Float res = Float.parseFloat( String.valueOf( x ) ) % Float.parseFloat( String.valueOf( y ) );
+			return (R) res;
+		}else if(type == 4) {
+			Double res = Double.parseDouble( String.valueOf( x ) ) % Double.parseDouble( String.valueOf( y ) );
+			return (R) res;
+		}else throw new IllegalArgumentException("Undefind type"); 
 	}
 	
-	/*
-	 * getters
-	 * */
-	public int getSizeY() { return sizeY; }
-	public int getSizeX() { return sizeX; }
-	public int getType() { return type; }
-	public T getElement(int y, int x) { return (T) matrix[y][x]; }
-	public Object[][] getObject() { return matrix; }
-	/*
-	 * methods
-	 * */
-	public void plus(Matrix<T> operatedMatrix) {
-		if(getSizeY() == operatedMatrix.getSizeY() && getSizeX() == operatedMatrix.getSizeX()) {
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R[][] plus(R[][] matrix, R[][] operandMatrix) {
+		if(matrix.length == operandMatrix.length && getMax(matrix) == getMax(operandMatrix) ) {
+			R[][] newMatrix = (R[][]) new Number[operandMatrix.length][getMax(operandMatrix)]; 
 			for(int i = 0; i < matrix.length; i++) {
 				for(int j = 0; j < matrix[i].length; j++) {
-					if(type == 1) matrix[i][j] = Byte.parseByte( String.valueOf( getElement(i, j) ) ) + Byte.parseByte( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 2) matrix[i][j] = Short.parseShort( String.valueOf( getElement(i, j) ) ) + Short.parseShort(  String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 3) matrix[i][j] = Integer.parseInt( String.valueOf( getElement(i, j) ) ) + Integer.parseInt(String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 4) matrix[i][j] = Long.parseLong( String.valueOf( getElement(i, j) ) ) + Long.parseLong( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 5) matrix[i][j] = Float.parseFloat( String.valueOf( getElement(i, j) ) ) + Float.parseFloat( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 6) matrix[i][j] = Double.parseDouble( String.valueOf( getElement(i, j) ) ) +Double.parseDouble( String.valueOf( operatedMatrix.getElement(i, j) ) );
+					newMatrix[i][j] = plus(matrix[i][j],  operandMatrix[i][j] );
 				}
 			}
+			return newMatrix;
 		}else {
 			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					getSizeY() + ", " + getSizeX() + " != " + operatedMatrix.getSizeY() + ", " + operatedMatrix.getSizeX());
+					matrix.length  + ", " + operandMatrix.length  + " != " + getMax(matrix) + ", " + getMax(operandMatrix));
 		}
 	}
-	
-	public void minus(Matrix<T> operatedMatrix) {
-		if(getSizeY() == operatedMatrix.getSizeY() && getSizeX() == operatedMatrix.getSizeX()) {
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R[][] minus(R[][] matrix, R[][] operandMatrix) {
+		if(matrix.length == operandMatrix.length && getMax(matrix) == getMax(operandMatrix) ) {
+			R[][] newMatrix = (R[][]) new Number[operandMatrix.length][getMax(operandMatrix)]; 
 			for(int i = 0; i < matrix.length; i++) {
 				for(int j = 0; j < matrix[i].length; j++) {
-					if(type == 1) matrix[i][j] = Byte.parseByte( String.valueOf( getElement(i, j) ) ) - Byte.parseByte( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 2) matrix[i][j] = Short.parseShort( String.valueOf( getElement(i, j) ) ) - Short.parseShort(  String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 3) matrix[i][j] = Integer.parseInt( String.valueOf( getElement(i, j) ) ) - Integer.parseInt(String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 4) matrix[i][j] = Long.parseLong( String.valueOf( getElement(i, j) ) ) - Long.parseLong( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 5) matrix[i][j] = Float.parseFloat( String.valueOf( getElement(i, j) ) ) - Float.parseFloat( String.valueOf( operatedMatrix.getElement(i, j) ) );
-					else if(type == 6) matrix[i][j] = Double.parseDouble( String.valueOf( getElement(i, j) ) ) - Double.parseDouble( String.valueOf( operatedMatrix.getElement(i, j) ) );
+					newMatrix[i][j] = minus(matrix[i][j],  operandMatrix[i][j] );
 				}
 			}
+			return newMatrix;
 		}else {
 			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					getSizeY() + ", " + getSizeX() + " != " + operatedMatrix.getSizeY() + ", " + operatedMatrix.getSizeX());
+					matrix.length  + ", " + operandMatrix.length  + " != " + getMax(matrix) + ", " + getMax(operandMatrix));
 		}
 	}
-	
-	
-	public void mult(T num) {
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R[][] mult(R[][] matrix, R num) {
+		R[][] newMatrix = (R[][]) new Number[matrix.length][getMax(matrix)]; 
 		for(int i = 0; i < matrix.length; i++) {
 			for(int j = 0; j < matrix[i].length; j++) {
-				if(type == 1) matrix[i][j] = Byte.parseByte( String.valueOf( getElement(i, j) ) ) * Byte.parseByte( String.valueOf( num ) );
-				else if(type == 2) matrix[i][j] = Short.parseShort( String.valueOf( getElement(i, j) ) ) * Short.parseShort(  String.valueOf( num ) );
-				else if(type == 3) matrix[i][j] = Integer.parseInt( String.valueOf( getElement(i, j) ) ) * Integer.parseInt(String.valueOf( num ) );
-				else if(type == 4) matrix[i][j] = Long.parseLong( String.valueOf( getElement(i, j) ) ) * Long.parseLong( String.valueOf( num ) );
-				else if(type == 5) matrix[i][j] = Float.parseFloat( String.valueOf( getElement(i, j) ) ) * Float.parseFloat( String.valueOf( num ) );
-				else if(type == 6) matrix[i][j] = Double.parseDouble( String.valueOf( getElement(i, j) ) ) * Double.parseDouble( String.valueOf( num ) );
+				newMatrix[i][j] = plus(matrix[i][j],  num);
 			}
 		}
+		return newMatrix;
 	}
-	public void mult(Matrix<T> operatedMatrix) {
-		if(getSizeX() == operatedMatrix.getSizeY()) {
-			Object[][] newMatrix = new Object[operatedMatrix.getSizeY()][operatedMatrix.getSizeX()];
-			for(int i = 0; i < newMatrix.length; i++) {
-				for(int j = 0; j < newMatrix[i].length; j++) {
-					newMatrix[i][j] = 0;
-				}
-			}
-			for(int x = 0; x < operatedMatrix.getSizeX(); x++) {
-				for(int j = 0; j < getSizeX(); j++) {
-					for(int y = 0; y < operatedMatrix.getSizeY(); y++) {
-						if(type == 1) newMatrix[j][x] = Byte.parseByte( String.valueOf(newMatrix[j][x]) ) + Byte.parseByte( String.valueOf(matrix[j][y]) ) * Byte.parseByte( String.valueOf(operatedMatrix.getElement(y,x)));
-						else if(type == 2) newMatrix[j][x] = Short.parseShort( String.valueOf(newMatrix[j][x]) ) + Short.parseShort( String.valueOf(matrix[j][y]) ) * Short.parseShort( String.valueOf(operatedMatrix.getElement(y,x)));
-						else if(type == 3) newMatrix[j][x] = Integer.parseInt( String.valueOf(newMatrix[j][x]) ) + Integer.parseInt( String.valueOf(matrix[j][y]) ) * Integer.parseInt( String.valueOf(operatedMatrix.getElement(y,x)));
-						else if(type == 4) newMatrix[j][x] = Long.parseLong( String.valueOf(newMatrix[j][x]) ) + Long.parseLong( String.valueOf(matrix[j][y]) ) * Long.parseLong( String.valueOf(operatedMatrix.getElement(y,x)));
-						else if(type == 5) newMatrix[j][x] = Float.parseFloat( String.valueOf(newMatrix[j][x]) ) + Float.parseFloat( String.valueOf(matrix[j][y]) ) * Float.parseFloat( String.valueOf(operatedMatrix.getElement(y,x)));
-						else if(type == 6) newMatrix[j][x] = Double.parseDouble( String.valueOf(newMatrix[j][x]) ) + Double.parseDouble( String.valueOf(matrix[j][y]) ) * Double.parseDouble( String.valueOf(operatedMatrix.getElement(y,x)));
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R[][] mult(R[][] matrix, R[][] operandMatrix) {
+		if(getMax(matrix) == operandMatrix.length) {
+			R[][] newMatrix = (R[][]) new Number[operandMatrix.length][getMax(operandMatrix)]; 
+			for(int x = 0; x < getMax(operandMatrix); x++) {
+				for(int j = 0; j < getMax(matrix); j++) {
+					for(int y = 0; y < operandMatrix.length; y++) {
+						newMatrix[j][x] = plus( (R) newMatrix[j][x], 
+															mult( 
+																	matrix[j][y], operandMatrix[y][x]
+																	)
+															);
 					}
 				}
 			}
-			matrix = newMatrix;
+			return newMatrix;
 		}else {
 			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					"this.x: " + getSizeX() + " != operatedMatrix.y: " + operatedMatrix.getSizeY());
+					"this.x: " + getMax(matrix) + " != operandMatrix.y: " + operandMatrix.length);
 		}
-	}
-	/*
-	 * override
-	 * */
-	@Override
-	public String toString() {
-		String x = "";
-		for(int i = 0; i < matrix.length; i++) {
-			x+="[";
-			for(int j = 0; j < matrix[i].length; j++) 
-				if(matrix[i].length-1 == j) x += String.valueOf(matrix[i][j]) + "],"; 
-				else x+= String.valueOf(matrix[i][j] + ", ");
-			x+="\n";
-		}
-		return x;
 	}
 	
 }
