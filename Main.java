@@ -25,6 +25,7 @@ public class Main {
 			{7,5,6},
 			{2,2,5}
 		};
+		
 		Number[][] res = Matrix.plus(c, d);
 		for(int i = 0; i<res.length;i++) {
 			for(int j = 0;j<res[i].length;j++) {
