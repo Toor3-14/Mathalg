@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, chi76. All rights reserved.
+ * Copyright (C) 1997-2018 Free Software Foundation, Inc.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -40,34 +40,33 @@ package Mathalg;
  * @author chi76
  * @version  0.1
  */
-public class MatrixMethods {
+public class MatrixOperation {
 	
-	private static <R extends Number> byte checkType(R var) {
-		String strType = String.valueOf( var.getClass() );
-		if( strType.contains("Integer") )  return 1;
-		else if( strType.contains("Long") ) return 2;
-		else if( strType.contains("Float") ) return 3;
-		else if( strType.contains("Double") ) return 4;
+	private static <R extends Number> byte checkType(String checkClass) {
+		if( checkClass.contains("Integer") )  return 1;
+		else if( checkClass.contains("Long") ) return 2;
+		else if( checkClass.contains("Float") ) return 3;
+		else if( checkClass.contains("Double") ) return 4;
 		else throw new IllegalArgumentException("Undefind type"); 
 	}
-	
-	private static<R extends Number> int getMax(R[][] matrix) {
+	private static<R extends Number> int getMax(Matrix<R> matrix) {
 		int max = 0;
 		int iter = 0;
-		for(int i = 0; i < matrix.length; i++) {
-			if(matrix[i].length > max) {
-				max = matrix[i].length;
+		for(int i = 0; i < matrix.getSizeY(); i++) {
+			if(matrix.getSizeX() > max) {
+				max = matrix.getSizeX();
 				iter++;
-			}else if(matrix[i].length < max) {
+			}else if(matrix.getSizeX()  < max) {
 				iter++;
 			}
 		}
 		if(iter>1) throw new IllegalArgumentException("Incorrect line size of array, the lines must be the same size inside the array!"); 
 		return max;
 	}
+
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R plus(R x,R y) {
-		byte type = checkType(x);
+		byte type = checkType(String.valueOf(x.getClass()));
 		if(type == 1) {
 			Integer res =  Integer.parseInt( String.valueOf( x ) ) + Integer.parseInt( String.valueOf( y ) );
 			return (R) res;
@@ -84,7 +83,7 @@ public class MatrixMethods {
 	}
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R minus(R x,R y) {
-		byte type = checkType(x);
+		byte type = checkType(String.valueOf(x.getClass()));
 		if(type == 1) {
 			Integer res =  Integer.parseInt( String.valueOf( x ) ) - Integer.parseInt( String.valueOf( y ) );
 			return (R) res;
@@ -101,7 +100,7 @@ public class MatrixMethods {
 	}
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R mult(R x,R y) {
-		byte type = checkType(x);
+		byte type = checkType(String.valueOf(x.getClass()));
 		if(type == 1) {
 			Integer res =  Integer.parseInt( String.valueOf( x ) ) * Integer.parseInt( String.valueOf( y ) );
 			return (R) res;
@@ -118,7 +117,7 @@ public class MatrixMethods {
 	}
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R divid(R x,R y) {
-		byte type = checkType(x);
+		byte type = checkType(String.valueOf(x.getClass()));
 		if(type == 1) {
 			Integer res =  Integer.parseInt( String.valueOf( x ) ) / Integer.parseInt( String.valueOf( y ) );
 			return (R) res;
@@ -135,7 +134,7 @@ public class MatrixMethods {
 	}
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R mod(R x,R y) {
-		byte type = checkType(x);
+		byte type = checkType(String.valueOf(x.getClass()));
 		if(type == 1) {
 			Integer res =  Integer.parseInt( String.valueOf( x ) ) % Integer.parseInt( String.valueOf( y ) );
 			return (R) res;
@@ -155,73 +154,100 @@ public class MatrixMethods {
 	
 	
 	
-	@SuppressWarnings("unchecked")
-	public static<R extends Number> void plus(R[][] matrix, R[][] operandMatrix) {
-		if(matrix.length == operandMatrix.length && getMax(matrix) == getMax(operandMatrix) ) {
-			R[][] newMatrix = operandMatrix; 
-			for(int i = 0; i < matrix.length; i++) {
-				for(int j = 0; j < matrix[i].length; j++) {
-					newMatrix[i][j] = plus(matrix[i][j],  operandMatrix[i][j] );
-				}
-			}
-		}else {
-			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					matrix.length  + ", " + operandMatrix.length  + " != " + getMax(matrix) + ", " + getMax(operandMatrix));
-		}
-	}
-	@SuppressWarnings("unchecked")
-	public static<R extends Number> R[][] minus(R[][] matrix, R[][] operandMatrix) {
-		if(matrix.length == operandMatrix.length && getMax(matrix) == getMax(operandMatrix) ) {
-			R[][] newMatrix = (R[][]) new Number[operandMatrix.length][getMax(operandMatrix)]; 
-			for(int i = 0; i < matrix.length; i++) {
-				for(int j = 0; j < matrix[i].length; j++) {
-					newMatrix[i][j] = minus(matrix[i][j],  operandMatrix[i][j] );
+	public static<R extends Number> Matrix<R> plus(Matrix<R> matrix, Matrix<R> operand) {
+		if(matrix.getSizeY() == operand.getSizeY() && getMax(matrix) == getMax(operand) ) {
+			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), operand.getSizeX());
+			for(int i = 0; i < operand.getSizeY(); i++) {
+				for(int j = 0; j < operand.getSizeX(); j++) {
+					newMatrix.add(i, j,
+												plus(matrix.get(i, j),  operand.get(i,j))
+											 );
 				}
 			}
 			return newMatrix;
 		}else {
 			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					matrix.length  + ", " + operandMatrix.length  + " != " + getMax(matrix) + ", " + getMax(operandMatrix));
+					matrix.getSizeY()  + ", " + operand.getSizeY()  + " != " + getMax(matrix) + ", " + getMax(operand));
 		}
 	}
-	@SuppressWarnings("unchecked")
-	public static<R extends Number> R[][] mult(R[][] matrix, R num) {
-		R[][] newMatrix = (R[][]) new Number[matrix.length][getMax(matrix)]; 
-		for(int i = 0; i < matrix.length; i++) {
-			for(int j = 0; j < matrix[i].length; j++) {
-				newMatrix[i][j] = plus(matrix[i][j],  num);
+
+	public static<R extends Number> Matrix<R> minus(Matrix<R> matrix, Matrix<R> operand) {
+		if(matrix.getSizeY() == operand.getSizeY() && getMax(matrix) == getMax(operand) ) {
+			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), operand.getSizeX());
+			for(int i = 0; i < operand.getSizeY(); i++) {
+				for(int j = 0; j < operand.getSizeX(); j++) {
+					newMatrix.add(i, j,
+												minus(matrix.get(i, j),  operand.get(i,j))
+											 );
+				}
+			}
+			return newMatrix;
+		}else {
+			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
+					matrix.getSizeY()  + ", " + operand.getSizeY()  + " != " + getMax(matrix) + ", " + getMax(operand));
+		}
+	}
+	
+	public static<R extends Number> Matrix<R> mult(Matrix<R> matrix, R num) {
+		Matrix<R> newMatrix = new Matrix<>(matrix.getSizeY(), getMax(matrix));
+		for(int i = 0; i < matrix.getSizeY(); i++) {
+			for(int j = 0; j < matrix.getSizeX(); j++) {
+				newMatrix.add(i,j,
+											mult(matrix.get(i, j), num)
+										);
 			}
 		}
 		return newMatrix;
 	}
-	@SuppressWarnings("unchecked")
-	public static<R extends Number> R[][] mult(R[][] matrix, R[][] operandMatrix) {
-		if(getMax(matrix) == operandMatrix.length) {
-			R[][] newMatrix = (R[][]) new Number[operandMatrix.length][getMax(operandMatrix)]; 
-			for(int x = 0; x < getMax(operandMatrix); x++) {
+
+	public static<R extends Number> Matrix<R> mult(Matrix<R> matrix, Matrix<R> operand) {
+		if(getMax(matrix) == operand.getSizeY()) {
+			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), getMax(operand));
+			for(int x = 0; x < getMax(operand); x++) {
 				for(int j = 0; j < getMax(matrix); j++) {
-					for(int y = 0; y < operandMatrix.length; y++) {
-						newMatrix[j][x] = plus( (R) newMatrix[j][x], 
-															mult( 
-																	matrix[j][y], operandMatrix[y][x]
-																	)
-															);
+					for(int y = 0; y < operand.getSizeY(); y++) {
+						
+						if(y == 0) {
+							newMatrix.add(j, x,
+										mult(matrix.get(j, y), operand.get(y, x))
+								); 
+						}else {
+							newMatrix.set(j, x,
+									plus( (R) newMatrix.get(j, x),
+										mult(matrix.get(j, y), operand.get(y, x))
+									)
+								); 
+						}
+						
 					}
 				}
 			}
 			return newMatrix;
 		}else {
 			throw new IllegalArgumentException("Incorrect size of operated Matrix, " +
-					"this.x: " + getMax(matrix) + " != operandMatrix.y: " + operandMatrix.length);
+					"this.x: " + getMax(matrix) + " != operand Matrix.y: " + operand.getSizeY());
 		}
 	}
 
-	public static<T extends Number> void print(T[][] item) {
-		for(int i = 0; i < item.length; i++) {
-			for(int j = 0; j < item[i].length; j++) {
-				System.out.print(item[i][j] + ", ");
+	public static<R extends Number> Matrix<R> toMatrix(R[][] item) {
+		return new Matrix<>(item);
+	}
+	@SuppressWarnings("unchecked")
+	public static<R extends Number> R[][] toWrapper(Matrix<R> item) {
+		R[][] wrapper;
+		String checkType = String.valueOf(item.get(0, 0).getClass());
+		
+		if( checkType.contains("Integer") )  wrapper = (R[][]) new Integer[item.getSizeY()][item.getSizeX()];
+		else if( checkType.contains("Long") ) wrapper = (R[][]) new Long[item.getSizeY()][item.getSizeX()];
+		else if( checkType.contains("Float") ) wrapper = (R[][]) new Float[item.getSizeY()][item.getSizeX()];
+		else if( checkType.contains("Double") ) wrapper = (R[][]) new Double[item.getSizeY()][item.getSizeX()];
+		else throw new IllegalArgumentException("Undefind type"); 
+		
+		for(int i = 0; i < item.getSizeY(); i++) {
+			for(int j = 0; j < item.getSizeX(); j++) {
+				wrapper[i][j] = item.get(i, j);
 			}
-			System.out.print("\n");
 		}
+		return wrapper;
 	}
 }
