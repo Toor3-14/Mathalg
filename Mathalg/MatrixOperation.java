@@ -24,9 +24,9 @@ package Mathalg;
 
 
 /**
- * This class contains various methods for manipulating arrays[][] as matrix
+ * This class contains various methods for manipulating list<list<E>> as matrix
  *
- * <p>Almost all methods in this class have an unchecked type  {@code @SuppressWarnings("unchecked")}
+ * <p>A large number of methods in this class have an unchecked type  {@code @SuppressWarnings("unchecked")}
  *
  * <p>The documentation for the methods contained in this class includes
  * brief descriptions of the <i>implementations</i>. Such descriptions should
@@ -40,8 +40,9 @@ package Mathalg;
  * @author chi76
  * @version  0.1
  */
-public class MatrixOperation {
-	
+class MatrixOperation {
+
+// PRIVATE SECTION
 	private static <R extends Number> byte checkType(String checkClass) {
 		if( checkClass.contains("Integer") )  return 1;
 		else if( checkClass.contains("Long") ) return 2;
@@ -64,6 +65,9 @@ public class MatrixOperation {
 		return max;
 	}
 
+
+// PRIMITIVES METHODS
+	
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R plus(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -152,7 +156,7 @@ public class MatrixOperation {
 	
 	
 	
-	
+// MATRIX METHODS
 	
 	public static<R extends Number> Matrix<R> plus(Matrix<R> matrix, Matrix<R> operand) {
 		if(matrix.getSizeY() == operand.getSizeY() && getMax(matrix) == getMax(operand) ) {
