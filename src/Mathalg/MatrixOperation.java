@@ -24,7 +24,7 @@ package Mathalg;
 
 
 /**
- * This class contains various methods for manipulating list<list<E>> as matrix
+ * This class contains various methods for manipulating {@code list<list<E>>} as matrix
  *
  * <p>A large number of methods in this class have an unchecked type  {@code @SuppressWarnings("unchecked")}
  *
@@ -43,6 +43,25 @@ package Mathalg;
 class MatrixOperation {
 
 // PRIVATE SECTION
+	
+	/**
+	 * This method determines the type of generalized number for the simplest operations
+	 * Table of types:
+	 * 		Type    |   Value
+	 *     - - - - -+- - - - - -
+	 *     Integer -   1
+	 *     Long         2
+	 *     Float         3
+	 *     Double     4
+	 *     - - - - - - - - - - - 
+	 * 
+	 * 
+	 * @implNote This is a crutch, however it is due to a java limitation. The generalized type 
+	 * of numbers in Java does not have the ability to perform the simplest operations (+,-,*,/,%).
+	 * @param checkClass is generic type . getClass(), that was convert to String
+	 * @return this method return value of the type (check table of types) or throw IllegalArgumentException
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	private static <R extends Number> byte checkType(String checkClass) {
 		if( checkClass.contains("Integer") )  return 1;
 		else if( checkClass.contains("Long") ) return 2;
@@ -50,6 +69,15 @@ class MatrixOperation {
 		else if( checkClass.contains("Double") ) return 4;
 		else throw new IllegalArgumentException("Undefind type"); 
 	}
+	
+	/**
+	 * This method determines maximal length of lines in the matrix
+	 * 
+	 * @implNote This is necessary because the matrix must have the same length of each internal list.
+	 * @param matrix that need for determining of maximal length internal list
+	 * @return {@code int max} - maximal length of each internal list
+	 * @throw IllegalArgumentException {@inheritDoc}, if the length of internal lists varies.
+	 */
 	private static<R extends Number> int getMax(Matrix<R> matrix) {
 		int max = 0;
 		int iter = 0;
@@ -67,7 +95,15 @@ class MatrixOperation {
 
 
 // PRIMITIVES METHODS
-	
+
+	/**
+	 * This method adds two generalized numbers, determining its type.
+	 * 
+	 * @param x first number
+	 * @param y second number
+	 * @return the result of the operation extended to R
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R plus(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -85,6 +121,14 @@ class MatrixOperation {
 			return (R) res;
 		}else throw new IllegalArgumentException("Undefind type"); 
 	}
+	/**
+	 * This method negates two generalized numbers, determining its type.
+	 * 
+	 * @param x first number
+	 * @param y second number
+	 * @return the result of the operation extended to R
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R minus(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -102,6 +146,14 @@ class MatrixOperation {
 			return (R) res;
 		}else throw new IllegalArgumentException("Undefind type"); 
 	}
+	/**
+	 * This method multiplies two generalized numbers, determining its type.
+	 * 
+	 * @param x first number
+	 * @param y second number
+	 * @return the result of the operation extended to R
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R mult(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -119,6 +171,14 @@ class MatrixOperation {
 			return (R) res;
 		}else throw new IllegalArgumentException("Undefind type"); 
 	}
+	/**
+	 * This method divides two generalized numbers, determining its type.
+	 * 
+	 * @param x first number
+	 * @param y second number
+	 * @return the result of the operation extended to R
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R divid(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -136,6 +196,14 @@ class MatrixOperation {
 			return (R) res;
 		}else throw new IllegalArgumentException("Undefind type"); 
 	}
+	/**
+	 * This method divides modulo two generalized numbers, determining its type.
+	 * 
+	 * @param x first number
+	 * @param y second number
+	 * @return the result of the operation extended to R
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R mod(R x,R y) {
 		byte type = checkType(String.valueOf(x.getClass()));
@@ -158,6 +226,16 @@ class MatrixOperation {
 	
 // MATRIX METHODS
 	
+	/**
+	 * This method adds up two matrix
+	 * 
+	 * @implNote This method uses a different method for operations on numerical generalized values, 
+	 * and also uses a method to determine the maximum length of the internal list.
+	 * @param matrix first matrix
+	 * @param operand operated matrix
+	 * @return {@code Matrix<R>} - result of operation
+	 * @throw IllegalArgumentException {@inheritDoc}, if the dimensions of the matrices do not meet the requirements.
+	 */
 	public static<R extends Number> Matrix<R> plus(Matrix<R> matrix, Matrix<R> operand) {
 		if(matrix.getSizeY() == operand.getSizeY() && getMax(matrix) == getMax(operand) ) {
 			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), operand.getSizeX());
@@ -174,7 +252,16 @@ class MatrixOperation {
 					matrix.getSizeY()  + ", " + operand.getSizeY()  + " != " + getMax(matrix) + ", " + getMax(operand));
 		}
 	}
-
+	/**
+	 * This method negate two matrix
+	 * 
+	 * @implNote This method uses a different method for operations on numerical generalized values, 
+	 * and also uses a method to determine the maximum length of the internal list.
+	 * @param matrix first matrix
+	 * @param operand operated matrix
+	 * @return {@code Matrix<R>} - result of operation
+	 * @throw IllegalArgumentException {@inheritDoc}, if the dimensions of the matrices do not meet the requirements.
+	 */
 	public static<R extends Number> Matrix<R> minus(Matrix<R> matrix, Matrix<R> operand) {
 		if(matrix.getSizeY() == operand.getSizeY() && getMax(matrix) == getMax(operand) ) {
 			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), operand.getSizeX());
@@ -191,7 +278,15 @@ class MatrixOperation {
 					matrix.getSizeY()  + ", " + operand.getSizeY()  + " != " + getMax(matrix) + ", " + getMax(operand));
 		}
 	}
-	
+	/**
+	 * This method multiplies the matrix by a number.
+	 * 
+	 * @implNote This method uses a different method for operations on numerical generalized values, 
+	 * and also uses a method to determine the maximum length of the internal list.
+	 * @param matrix matrix that will be multiplied
+	 * @param num a number that we will multiplies by a matrix
+	 * @return {@code Matrix<R>} - result of operation
+	 */
 	public static<R extends Number> Matrix<R> mult(Matrix<R> matrix, R num) {
 		Matrix<R> newMatrix = new Matrix<>(matrix.getSizeY(), getMax(matrix));
 		for(int i = 0; i < matrix.getSizeY(); i++) {
@@ -203,7 +298,16 @@ class MatrixOperation {
 		}
 		return newMatrix;
 	}
-
+	/**
+	 * This method multiplies two matrix
+	 * 
+	 * @implNote This method uses a different method for operations on numerical generalized values, 
+	 * and also uses a method to determine the maximum length of the internal list.
+	 * @param matrix first matrix
+	 * @param operand operated matrix
+	 * @return {@code Matrix<R>} - result of operation
+	 * @throw IllegalArgumentException {@inheritDoc}, if the dimensions of the matrices do not meet the requirements.
+	 */
 	public static<R extends Number> Matrix<R> mult(Matrix<R> matrix, Matrix<R> operand) {
 		if(getMax(matrix) == operand.getSizeY()) {
 			Matrix<R> newMatrix = new Matrix<>(operand.getSizeY(), getMax(operand));
@@ -233,9 +337,23 @@ class MatrixOperation {
 		}
 	}
 
+	
+	/**
+	 * This method converts numeric wrappers into a matrix type.
+	 * 
+	 * @param item two-dimensional array type of numeric wrapper
+	 * @return {@code Matrix<R>} result of convertation 
+	 */
 	public static<R extends Number> Matrix<R> toMatrix(R[][] item) {
 		return new Matrix<>(item);
 	}
+	/**
+	 * This method converts matrix type into a numeric wrapper.
+	*
+	 * @param item matrix
+	 * @return {@code Matrix<R>} result of convertation.
+	 * @throw IllegalArgumentException {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	public static<R extends Number> R[][] toWrapper(Matrix<R> item) {
 		R[][] wrapper;

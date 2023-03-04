@@ -24,7 +24,23 @@ package Mathalg;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
+
+
+/**
+ * This class contains various methods for manipulating with list {@code <list<E>>} and set it logic.
+ *
+ * <p>The documentation for the methods contained in this class includes
+ * brief descriptions of the <i>implementations</i>. Such descriptions should
+ * be regarded as <i>implementation notes</i>, rather than parts of the
+ * <i>specification</i>.
+ *
+ * <p>This class is a member of the
+ * <a href="https://github.com/Toor3-14/Mathalg/tree/main/Mathalg">
+ * Mathalg Framework</a>.
+ *
+ * @author chi76
+ * @version  0.1
+ */
 
 public class Matrix<E extends Number> extends MatrixOperation {
 
@@ -32,7 +48,7 @@ public class Matrix<E extends Number> extends MatrixOperation {
 	
 	/**
 	 * The List<List> is a inner two-dimensional list.
-	 * As default has new ArrayList<>(16)
+	 * As default has {@code new ArrayList<>(16)}
 	 */
 	private List<List<E>> matrix;
 	/**
@@ -139,14 +155,14 @@ public class Matrix<E extends Number> extends MatrixOperation {
      *
      * @param  indexY index of the line to reach element
      * @param  indexX index of the element to return
-     * @return the element at the specified position in this Matrix.get(indexY).get(indexX)
+     * @return the element at the specified position in this {@codeMatrix.get(indexY).get(indexX)}
      * @throws IndexOutOfBoundsException {@inheritDoc}
      */
 	public E get(int indexY, int indexX) {
 		return matrix.get(indexY).get(indexX);
 	}
     /**
-     * Replaces the element at the specified position in this Matrix.get(indexY).get(indexX) with
+     * Replaces the element at the specified position in this {@codeMatrix.get(indexY).get(indexX)} with
      * the specified element.
      *
      * @param indexY index of the line to reach element
@@ -159,7 +175,7 @@ public class Matrix<E extends Number> extends MatrixOperation {
 		return matrix.get(indexY).set(indexX, value);
 	}
     /**
-     * Appends the specified element to the end of this Matrix.get(indexY).
+     * Appends the specified element to the end of this {@code Matrix.get(indexY)}.
      *
      * @param indexY line to be appended to this Matrix.get(indexY)
      * @param value element to be inserted
@@ -179,10 +195,10 @@ public class Matrix<E extends Number> extends MatrixOperation {
 	}
     /**
      * Inserts the specified element at the specified position in this
-     * Matrix.get(indexY).get(indexX). Shifts the element currently at that position (if any) and
+     * {@code Matrix.get(indexY).get(indexX)}. Shifts the element currently at that position (if any) and
      * any subsequent elements to the right (adds one to their indices).
      *
-     * @param indexY line to be appended to this Matrix.get(indexY)
+     * @param indexY line to be appended to this {@code Matrix.get(indexY)}
      * @param indexX index at which the specified element is to be inserted
      * @param value element to be inserted
      * @throws IndexOutOfBoundsException {@inheritDoc}
@@ -200,7 +216,7 @@ public class Matrix<E extends Number> extends MatrixOperation {
 		return true;
 	}
 	/**
-     * Removes the element at the specified position in this Matrix.get(indexY).
+     * Removes the element at the specified position in this {@code Matrix.get(indexY)}.
      * Shifts any subsequent elements to the left (subtracts one from their
      * indices).
      *
@@ -212,7 +228,7 @@ public class Matrix<E extends Number> extends MatrixOperation {
 		return  matrix.remove(indexY);
 	}
 	/**
-     * Removes the element at the specified position in this Matrix.get(indexY).get(indexX).
+     * Removes the element at the specified position in this {@code Matrix.get(indexY).get(indexX)}.
      * Shifts any subsequent elements to the left (subtracts one from their
      * indices).
      *
@@ -234,7 +250,7 @@ public class Matrix<E extends Number> extends MatrixOperation {
 		return matrix.isEmpty();
 	}
     /**
-     * Returns {@code true} if this matrix.get(indexY) contains no elements.
+     * Returns {@code true} if this {@code matrix.get(indexY)} contains no elements.
      *
      * @return {@code true} if this matrix.get(indexY) contains no elements
      */
