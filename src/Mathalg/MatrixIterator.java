@@ -23,11 +23,14 @@
 
 package Mathalg;
 
-class MatrixIterator<T> implements Iterable<T>{
-    private T[][] array;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    public Array2d(T[][] array) {
-        this.array = array;
+public class MatrixIterator<T extends Number> implements Iterable<T>{
+    private Matrix<T> matrix;
+
+    public MatrixIterator(Matrix<T> matrix) {
+        this.matrix = matrix;
     }
 
     @Override
@@ -38,8 +41,8 @@ class MatrixIterator<T> implements Iterable<T>{
 
             @Override
             public boolean hasNext() {
-                for(int i = this.i; i< array.length; i++){
-                    for(int j = this.j; j< array[i].length; j++){
+                for(int i = this.i; i< matrix.getSizeY(); i++){
+                    for(int j = this.j; j< matrix.getSizeX(); j++){
                         return true;
                     }
                 }
@@ -50,10 +53,10 @@ class MatrixIterator<T> implements Iterable<T>{
             public T next() {
                 if(!hasNext())
                     throw new NoSuchElementException();
-                T t = array[i][j];
+                T t = matrix.get(i,j);
                 j++;
-                for(int i = this.i; i< array.length; i++){
-                    for(int j = (i == this.i ? this.j : 0); j< array[i].length; j++){
+                for(int i = this.i; i< matrix.getSizeY(); i++){
+                    for(int j = (i == this.i ? this.j : 0); j< matrix.getSizeX(); j++){
                         this.i = i;
                         this.j = j;
                         return t;
